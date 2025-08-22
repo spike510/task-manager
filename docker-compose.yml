@@ -4,21 +4,24 @@ services:
   app:
     build: .
     ports:
-      - "8080:8080"
+      - "8085:8080"
     environment:
       DB_HOST: db
-      DB_USER: user
-      DB_PASSWORD: pass
-      DB_NAME: taskdb
+      DB_PORT: 5432
+      DB_USER: dev
+      DB_PASSWORD: dev
+      DB_NAME: taskmanager
     depends_on:
       - db
+    volumes:
+      - ./migrations:/app/migrations
 
   db:
     image: postgres:15
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: pass
-      POSTGRES_DB: taskdb
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: dev
+      POSTGRES_DB: taskmanager
     ports:
       - "5432:5432"
     volumes:
