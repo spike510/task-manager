@@ -28,12 +28,12 @@ func main() {
 	)
 	m.Up()
 
-	log.Println("migrations applied successfully")
+	log.Println("Migrations applied successfully")
 
-	r := http.NewRouter()
-
-	log.Println("Server running on :8080")
-	if err := r.Run(":8080"); err != nil {
+	r := http.NewRouter(database)
+	if err := r.Run(":8085"); err != nil {
 		log.Fatal(err)
 	}
+
+	log.Println("Server running on :8085")
 }
