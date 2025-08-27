@@ -10,3 +10,12 @@ A task management (TODO) API built with Go, Gin, PostgreSQL, JWT, Swagger, Docke
 - Docker + Docker Compose setup
 - CI/CD: linting, tests, build, and Docker image push
 - Optional Kubernetes deployment
+
+## 📖 API documentation
+Swagger UI is available under:
+http://localhost:8080/swagger/index.html
+
+## 🧪 Tests
+Run:
+```bash
+go test ./tests -v
