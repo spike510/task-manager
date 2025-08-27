@@ -7,6 +7,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spike510/task-manager/internal/task"
 	"github.com/spike510/task-manager/internal/user"
+
+	_ "github.com/spike510/task-manager/docs" // swagger docs
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func NewRouter(db *sql.DB) *gin.Engine {
@@ -42,6 +47,9 @@ func NewRouter(db *sql.DB) *gin.Engine {
 	auth.POST("/tasks", taskHandler.CreateTask)
 	auth.PUT("/tasks/:id", taskHandler.UpdateTask)
 	auth.DELETE("/tasks/:id", taskHandler.DeleteTask)
+
+	// Swagger UI
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	return r
 }

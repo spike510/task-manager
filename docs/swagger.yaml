@@ -1,0 +1,49 @@
+basePath: /
+definitions:
+  user.RegisterInput:
+    properties:
+      email:
+        type: string
+      password:
+        minLength: 6
+        type: string
+    required:
+    - email
+    - password
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API do zarządzania zadaniami (TODO).
+  title: Task Manager API
+  version: "1.0"
+paths:
+  /users/register:
+    post:
+      consumes:
+      - application/json
+      description: Tworzy nowego użytkownika
+      parameters:
+      - description: Dane użytkownika
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/user.RegisterInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Rejestracja użytkownika
+      tags:
+      - users
+swagger: "2.0"

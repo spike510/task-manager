@@ -19,6 +19,16 @@ type RegisterInput struct {
 	Password string `json:"password" binding:"required,min=6"`
 }
 
+// Register godoc
+// @Summary Rejestracja użytkownika
+// @Description Tworzy nowego użytkownika
+// @Tags users
+// @Accept  json
+// @Produce  json
+// @Param input body RegisterInput true "Dane użytkownika"
+// @Success 201 {object} map[string]interface{}
+// @Failure 400 {object} map[string]interface{}
+// @Router /users/register [post]
 func (h *Handler) Register(c *gin.Context) {
 	var input RegisterInput
 	if err := c.ShouldBindJSON(&input); err != nil {

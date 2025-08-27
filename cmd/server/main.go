@@ -11,6 +11,11 @@ import (
 	"github.com/spike510/task-manager/internal/http"
 )
 
+// @title Task Manager API
+// @version 1.0
+// @description API do zarządzania zadaniami (TODO).
+// @host localhost:8080
+// @BasePath /
 func main() {
 	// Database connection
 	database, err := db.Connect()
