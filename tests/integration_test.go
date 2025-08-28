@@ -44,7 +44,11 @@ func TestIntegration_RegisterLoginAndTaskFlow(t *testing.T) {
 	assert.Equal(t, 200, w.Code)
 
 	var loginResp map[string]string
-	json.Unmarshal(w.Body.Bytes(), &loginResp)
+	err := json.Unmarshal(w.Body.Bytes(), &loginResp)
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	token := loginResp["token"]
 	assert.NotEmpty(t, token)
 

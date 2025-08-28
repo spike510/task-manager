@@ -22,16 +22,31 @@ func main() {
 	if err != nil {
 		log.Fatal("DB connection failed:", err)
 	}
-	defer database.Close()
+	defer func() {
+		if err := database.Close(); err != nil {
+			log.Printf("failed to close database: %v", err)
+		}
+	}()
 
 	// Run migrations
 	driver, err := postgres.WithInstance(database, &postgres.Config{})
+	if err != nil {
+		log.Fatal("Database instance init failed:", err)
+	}
+
 	m, err := migrate.NewWithDatabaseInstance(
 		"file:///app/migrations",
 		"postgres",
 		driver,
 	)
-	m.Up()
+	if err != nil {
+		log.Fatal("Migrate instance init failed:", err)
+	}
+
+	err = m.Up()
+	if err != nil {
+		log.Fatal("Migrations failed:", err)
+	}
 
 	log.Println("Migrations applied successfully")
 

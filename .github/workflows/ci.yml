@@ -39,12 +39,30 @@ jobs:
       - name: Run linter
         run: |
           go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-          golangci-lint run ./...
+          golangci-lint run --timeout=5m ./...
+
+      - name: Install migrate CLI
+        run: |
+          curl -L https://github.com/golang-migrate/migrate/releases/download/v4.18.3/migrate.linux-amd64.tar.gz -o migrate.tar.gz
+          tar -xzf migrate.tar.gz
+          sudo mv migrate /usr/local/bin/migrate
+          migrate -version
+
+      - name: Run database migrations
+        env:
+          DATABASE_URL: "postgres://postgres:password@localhost:5432/taskdb?sslmode=disable"
+        run: |
+          migrate -path ./migrations -database "$DATABASE_URL" up
 
       - name: Run tests
         env:
-          DATABASE_URL: "postgres://postgres:password@localhost:5432/taskdb?sslmode=disable"
-        run: go test ./... -v
+          DB_HOST: "localhost"
+          DB_PORT: "5432"
+          DB_USER: "postgres"
+          DB_PASSWORD: "password"
+          DB_NAME: "taskdb" 
+        run: |
+          go test ./... -v
 
       - name: Build Docker image
         run: |

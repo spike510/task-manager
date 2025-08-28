@@ -1,6 +1,9 @@
 package task
 
-import "database/sql"
+import (
+	"database/sql"
+	"log"
+)
 
 type Repository struct {
 	db *sql.DB
@@ -29,7 +32,11 @@ func (r *Repository) GetAllByUser(userID int) ([]Task, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func() {
+		if err := rows.Close(); err != nil {
+			log.Printf("failed to close rows cursor: %v", err)
+		}
+	}()
 
 	var tasks []Task
 	for rows.Next() {
