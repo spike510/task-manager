@@ -67,3 +67,11 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t task-manager:latest .
+
+      - name: Push Docker image
+        if: false
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: <your-dockerhub-username>/task-manager:latest
+
