@@ -1,13 +1,14 @@
 # Build stage
-FROM golang:1.24.5 AS builder
+FROM golang:1.24.5-alpine AS builder
 WORKDIR /app
-COPY . .
+COPY go.mod go.sum ./
 RUN go mod download
-RUN go build -o server ./cmd/server
+COPY . .
+RUN go build -o task-manager ./cmd/server
 
 # Run stage
-FROM debian:bookworm-slim
+FROM alpine:latest
 WORKDIR /app
-COPY --from=builder /app/server .
+COPY --from=builder /app/task-manager .
 EXPOSE 8080
-CMD ["./server"]
+CMD ["./task-manager"]

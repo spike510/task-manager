@@ -45,10 +45,14 @@ func main() {
 
 	err = m.Up()
 	if err != nil {
-		log.Fatal("Migrations failed:", err)
+		if err == migrate.ErrNoChange {
+			log.Println("No migrations to apply.")
+		} else {
+			log.Fatalf("Migrations failed: %v", err)
+		}
+	} else {
+		log.Println("Migrations applied successfully.")
 	}
-
-	log.Println("Migrations applied successfully")
 
 	r := http.NewRouter(database)
 	if err := r.Run(":8080"); err != nil {
